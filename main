@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=4,vmem=50gb,walltime=10:00:00
+#PBS -l nodes=1:ppn=4,vmem=50gb,walltime=96:00:00
 #PBS -N pRF
 #PBS -V
 
@@ -15,6 +15,8 @@ fi
 
 [ -z "$FREESURFER_LICENSE" ] && echo "Please set FREESURFER_LICENSE in .bashrc" && exit 1;
 echo $FREESURFER_LICENSE > license.txt
+
+mkdir -p prf
 
 time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 

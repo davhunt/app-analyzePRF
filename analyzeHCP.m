@@ -10,82 +10,35 @@ stimulus{1} = double(a1.img);
 
 pxtodeg = 16.0/200;
 
-mkdir('prf');
+maskBool = {};
+maskedData = [];
+a1 = load_untouch_nii(mask);
+maskBool = double(a1.img);
 
-%batchResults = struct;
-
-% batch time-series into 10 / 11 parts to save v memory
-%k = floor(size(data{1},1)/10);
-%rmndr = mod(size(data{1},1),k);
-%split = ones(1,k)*10;
-%if rmndr ~= 0
-%  split = [split, rmndr];
-%else
-%  split = [split];
-%end
-
-%batched_len = size(split, 2);
-
-%batched = mat2cell(data{1},split,[size(data{1},2)],[size(data{1},3)],[size(data{1},4)]);
-
-%clearvars data;
-
-
-%if exist('maskedData.mat') == 2
-%  load('maskedData.mat');
-%else
-  maskBool = {};
-  maskedData = [];
-  a1 = load_untouch_nii(mask);
-  maskBool{1} = double(a1.img);
-
-%for i = 1:size(maskBool{1},1)
-%  for j = 1:size(maskBool{1},2)
-%    for k = 1:size(maskBool{1},3)
-%      if maskBool{1}(i,j,k) >= 1.0
-%        maskedData = [maskedData; data{1}(i,j,k,:)];
-%      end
-%    end
-%  end
-%end
-
-  for i = 1:size(data,1)
-    for j = 1:size(data,2)
-      for k = 1:size(data,3)
-        if maskBool{1}(i,j,k) >= 1.0
-          maskBool{1}(i,j,k) = 1.0;	% create binary mask
-        end
+for i = 1:size(data,1)
+  for j = 1:size(data,2)
+    for k = 1:size(data,3)
+      if maskBool(i,j,k) >= 1.0
+        maskBool(i,j,k) = 1.0;	% create binary mask
       end
     end
   end
+end
+maskBool = logical(maskBool);
 
-  [r,c,v] = ind2sub(size(maskBool{1}),find(maskBool{1}));
+[r,c,v] = ind2sub(size(maskBool),find(maskBool));
 
-  maskedData = [];
-  for i = 1:size(r,1)
-    maskedData = [maskedData; data(r(i),c(i),v(i),:)];
-  end
+maskedData = zeros(size(r,1),size(data,4));
+for i = 1:size(r,1)
+  maskedData(i,:) = data(r(i),c(i),v(i),:);
+end
+maskedData = squeeze(maskedData);
 
-  maskBool{1} = logical(maskBool{1});
-
-  maskedData = squeeze(maskedData);
-  save('maskedData.mat','maskedData','maskBool','stimulus');
-%end
-
-
-%for i = 1:batched_len
-%results = analyzePRF(stimulus,batched{i}(:,:,:,:),1,struct('seedmode',[-2],'display','off'));
 results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
-
-
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
 results.ang(results.ecc(:)==0) = NaN;
-%allresults = permute(reshape(allresults,[91282 184 3 6]),[1 4 2 3]);
-%allresults = permute(reshape(allresults,[59412 1 1 6]),[1 4 2 3]);
-%allresults = permute(reshape(allresults,[totalVertices 1 1 6]),[1 4 2 3]);
-
 
 [polarAngle, eccentricity, expt, rfWidth, r2, gain, meanvol] = deal(zeros(size(data,1), size(data,2), size(data,3)));
 
@@ -109,13 +62,10 @@ for k = 1:size(maskBool{1},3)
   end
 end
 
-res = 2.0;
-
 nii.hdr.dime.dim(1) = 3;
 nii.hdr.dime.dim(5) = 1;
 nii.hdr.dime.datatype = 64; %FLOAT64 img
 nii.hdr.dime.bitpix = 64;
-
 
 nii.img = polarAngle;
 save_untouch_nii(nii,['prf/polarAngle.nii.gz']);
@@ -138,54 +88,4 @@ save_untouch_nii(nii,['prf/gain.nii.gz']);
 nii.img = meanvol;
 save_untouch_nii(nii,['prf/meanvol.nii.gz']);
 
-clearvars results;
-
 end
-
-
-%for str = {'polarAngle','eccentricity','exponent','rfWidth','r2','gain','meanvol'}
-%  img = struct;
-%  data2 = [];
-%  for i = 1:batched_len
-%    img.(['a' num2str(i)]) = load_untouch_nii(strcat(str{1},'_',num2str(i),'.nii.gz'));
-%    data2 = cat(1,data2,double(img.(['a' num2str(i)]).img));
-%  nii.img = make_nii(data2,[1.60 1.60 1.60]);
-%  save_nii(nii.img,strcat(str{1},'.nii.gz'));
-%  end
-%  for i = 1:batched_len
-%    delete(strcat(str{1},'_',num2str(i),'.nii.gz'));
-%  end
-%end
-
-%cd ..
-
-%results.ang = [];
-%results.ecc = [];
-%results.expt = [];
-%results.rfWidth = [];
-%results.r2 = [];
-%results.gain = [];
-%results.meanvol = [];
-%
-%
-%
-%for i = 1:batched_len
-%results.ang = cat(1,results.ang,batchResults.(['ang_' num2str(i)]));
-%results.ecc = cat(1,results.ecc,batchResults.(['ecc_' num2str(i)]));
-%results.expt = cat(1,results.expt,batchResults.(['expt_' num2str(i)]));
-%results.rfWidth = cat(1,results.rfWidth,batchResults.(['rfWidth_' num2str(i)]));
-%results.r2 = cat(1,results.r2,batchResults.(['r2_' num2str(i)]));
-%results.gain = cat(1,results.gain,batchResults.(['gain_' num2str(i)]));
-%results.meanvol = cat(1,results.meanvol,batchResults.(['meanvol_' num2str(i)]));
-%end
-%    
-%json = jsonencode(struct('polarAngle',results.ang,'eccentricity',results.ecc,'exponent',results.expt, ...
-%'rfWidth',results.rfWidth,'r2',results.r2,'gain',results.gain,'meanvol',results.meanvol));
-%fileID = fopen('product.json','w')
-%fprintf(fileID,json)
-%fclose(fileID)
-
-% The stimulus is 100 pixels (in both height and weight), and this corresponds to
-% 10 degrees of visual angle.  To convert from pixels to degreees, we multiply
-% by 10/100.
-% cfactor = 10/100;
