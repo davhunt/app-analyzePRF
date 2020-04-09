@@ -11,7 +11,7 @@ end
 
 % load my own config.json
 config = loadjson('config.json');
-if exist(config.mask) == 2
+if isfield(config,'mask')
   mask = config.mask;
 else
   mask = fullfile(pwd,'mask.nii.gz');
