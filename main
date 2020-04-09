@@ -8,7 +8,7 @@ fmri=$(jq -r .fmri config.json)
 stim=$(jq -r .stim config.json)
 fsdir=$(jq -r .output config.json)
 
-if [ ! -f jq -r .mask config.json ]; then
+if [ ! -f $(jq -r .mask config.json) ]; then
   time singularity exec -e docker://brainlife/freesurfer:6.0.1 mri_convert ${fsdir}/mri/T1.mgz ${fsdir}/mri/T1.nii.gz
   time singularity exec -e docker://brainlife/fsl:6.0.1 ./create_mask.sh $fsdir $fmri
 fi
