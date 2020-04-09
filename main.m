@@ -6,8 +6,7 @@ if ~isdeployed
 	addpath(genpath('/N/u/brlife/git/mrTools'))
 	addpath(genpath('/N/u/brlife/git/vistasoft'))
 	addpath(genpath('/N/u/davhunt/Carbonate/analyzePRF/utilities'))
-        addpath(genpath('/N/u/davhunt/Carbonate/analyzePRF'))
-        addpath(genpath('/N/u/davhunt/Carbonate/NIfTI_cifti_matlab_tools'))
+        addpath(genpath('/N/u/davhunt/Carbonate/Downloads/NIfTI_matlab_tools'))
 end
 
 % load my own config.json

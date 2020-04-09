@@ -7,7 +7,7 @@
 fmri=$(jq -r .fmri config.json)
 stim=$(jq -r .stim config.json)
 fsdir=$(jq -r .output config.json)
-#mask=$(jq -r .mask config.json)
+
 if [ ! -f jq -r .mask config.json ]; then
   time singularity exec -e docker://brainlife/freesurfer:6.0.1 mri_convert ${fsdir}/mri/T1.mgz ${fsdir}/mri/T1.nii.gz
   time singularity exec -e docker://brainlife/fsl:6.0.1 ./create_mask.sh $fsdir $fmri
@@ -20,7 +20,4 @@ mkdir -p prf
 
 time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
 
-#time singularity exec -e docker://brainlife/afni:16.3.0 ./align.sh
-
 time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer:6.0.1 ./create_vtks.sh $fsdir
-#time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer:6.0.1 ./replace_vtks.sh

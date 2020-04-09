@@ -26,4 +26,4 @@ Author: Kendrick Kay <kendrick@post.harvard.edu>
 Date:   Tue Sep 24 20:16:09 2019 -0500
 
     fix minor bug
-/N/u/davhunt/Carbonate/NIfTI_cifti_matlab_tools
+/N/u/davhunt/Carbonate/Downloads/NIfTI_matlab_tools
