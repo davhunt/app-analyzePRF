@@ -18,6 +18,6 @@ else
 end
 
 % compute pRF
-analyzeHCP(config.fmri, config.stim, mask);
+getPRF(config.fmri, config.stim, mask);
 
 end
