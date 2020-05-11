@@ -3,7 +3,7 @@
 
 # app-analyzePRF documentation
 
-This app takes the time-series fMRI data of an individual HCP 7T subject (bold.nii.gz), and performs a retinotopic analysis of the subject's visual response to particular stimuli (stim.nii.gz).  Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  Visual response properties include the grayordinate's r^2 (variance explained), receptive field angle, eccentricity, and size (std of the Gaussian), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
+This app takes the time-series fMRI data of an individual subject performing a retinotopy task (bold.nii.gz), and performs a retinotopic analysis of the subject's visual response to particular stimuli (stim.nii.gz).  Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  Visual response properties include the grayordinate's r^2 (variance explained), receptive field angle, eccentricity, and size (std of the Gaussian), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
 
 [![pRF parameters](https://raw.githubusercontent.com/davhunt/pictures/master/Screenshot%20from%202019-04-17%2014-41-11.png)
 
@@ -26,6 +26,12 @@ The stimulus stim.nii.gz must match the temporal dimension (TR) of the fMRI, and
 
 analyzePRF is a MATLAB toolbox for fitting population receptive field (pRF) models
 to fMRI data.  It is developed by Kendrick Kay (kendrick@post.harvard.edu).
+
+### For HCP subjects
+
+HCP subject voxel-wise fMRI data can be downloaded from db.humanconnectome.org.
+
+In a 7T subject's "7T_RET_fixextended" folder, preprocessed retinotopy BOLD data can be found at: MNINonLinear/Results/tfMRI_7T_RETCCW_AP_RETCW_PA_RETEXP_AP_RETCON_PA_RETBAR1_AP_RETBAR2_PA/tfMRI_7T_RETCCW_AP_RETCW_PA_RETEXP_AP_RETCON_PA_RETBAR1_AP_RETBAR2_PA_hp2000_clean.nii.gz
 
 ### On Brainlife.io
 
