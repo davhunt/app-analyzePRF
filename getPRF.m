@@ -34,6 +34,27 @@ for i = 1:size(r,1)
 end
 maskedData = squeeze(maskedData);
 
+
+% convert to units of % change from mean response in each voxel
+
+%for i = 1:size(r,1)
+%  avgResponse = mean(maskedData(i,:));
+%  maskedData(i,:) = (maskedData(i,:)-avgResponse)/avgResponse; % *100
+%end
+
+
+for i = 1:size(r,1)
+  for j = 1:6
+    avgResponse = mean(maskedData(i,300*(j-1)+1:300*j));
+    maskedData(i,300*(j-1)+1:300*j) = (maskedData(i,300*(j-1)+1:300*j)-avgResponse)/avgResponse;
+  end
+end
+
+
+
+
+
+
 results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[2],'display','off'));
 
 % one final modification to the outputs:
