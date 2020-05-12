@@ -3,7 +3,9 @@
 
 # app-analyzePRF documentation
 
-This app takes the time-series fMRI data of an individual subject performing a retinotopy task (bold.nii.gz), and performs a retinotopic analysis of the subject's visual response to particular stimuli (stim.nii.gz).  Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  Visual response properties include the grayordinate's r^2 (variance explained), receptive field angle, eccentricity, and size (std of the Gaussian), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
+This app takes the time-series fMRI data of an individual subject performing a retinotopy task (bold.nii.gz), and derives voxel-wise pRF (population receptive field) measurements from their visual response to a stimulus (stim.nii.gz) using the [analyzePRF toolbox](https://github.com/kendrickkay/analyzePRF). In this model a static, compressive nonlinearity is applied to the modeled BOLD response before PRFs are fit, in line with findings that spatial summation in human visual cortex is compressive.
+
+Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  PRF measurements include the grayordinate's r^2 (variance explained), receptive field angle, eccentricity, and size (std of the Gaussian), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
 
 [![pRF parameters](https://raw.githubusercontent.com/davhunt/pictures/master/Screenshot%20from%202019-04-17%2014-41-11.png)
 
