@@ -12,7 +12,7 @@ fsdir=$(jq -r .output config.json)
 echo $FREESURFER_LICENSE > license.txt
 
 if [ ! -f $(jq -r .mask config.json) ]; then
-  time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer-mini:6.0.1 bash -c "mri_convert ${fsdir}/mri/T1.mgz ./T1.nii.gz && \
+  time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer:7.1.0 bash -c "mri_convert ${fsdir}/mri/T1.mgz ./T1.nii.gz && \
 							mri_convert ${fsdir}/mri/rh.ribbon.mgz ./rh.ribbon.nii.gz && \
 							mri_convert ${fsdir}/mri/lh.ribbon.mgz ./lh.ribbon.nii.gz && \
 							mri_concat --i lh.ribbon.nii.gz --i rh.ribbon.nii.gz --o rh+lh.ribbon.nii.gz --combine \
