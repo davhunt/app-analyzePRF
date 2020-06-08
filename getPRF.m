@@ -34,7 +34,7 @@ for i = 1:size(r,1)
 end
 maskedData = squeeze(maskedData);
 
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[0 1 2],'display','off'));
+results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
@@ -49,6 +49,7 @@ for k = 1:size(maskBool,3)
       if maskBool(i,j,k) >= 1.0
         polarAngle(i,j,k) = results.ang(m);
         eccentricity(i,j,k) = results.ecc(m)*pxtodeg;
+
         expt(i,j,k) = results.expt(m);
         rfWidth(i,j,k) = results.rfsize(m)*pxtodeg;
         r2(i,j,k) = results.R2(m);
