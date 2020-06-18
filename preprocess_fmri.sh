@@ -2,13 +2,20 @@
 
 fmri=${1}
 ES=${2}
-do_stc=${3}
+TR=${3}
+do_stc=${4}
 fmri_base=$(basename $fmri)
 
 if ${do_stc}; then
   echo "Doing slice timing correction"
-  TR=$(fslval ${fmri} pixdim4)
-  slicetimer -i ${fmri} -o slicetime_corrected_${fmri_base} --tcustom=slicetiming.txt --repeat=$TR --verbose
+  if [ $TR != null ]; then
+    :
+  elif [ ! -z $(fslval ${fmri} pixdim4 ]; then
+    TR=$(fslval ${fmri} pixdim4)
+  else
+    echo "fmri TR must be specified" && do_stc=false
+  fi
+  $do_stc && slicetimer -i ${fmri} -o slicetime_corrected_${fmri_base} --tcustom=slicetiming.txt --repeat=$TR --verbose && \
   fmri=slicetime_corrected_${fmri_base}
 fi
 
