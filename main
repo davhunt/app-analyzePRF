@@ -33,6 +33,7 @@ elif $preprocess; then
   else
     do_stc=false
   fi
+  if [[ $TR == "" ]]; then TR=null; fi
   time singularity exec -e docker://brainlife/fsl:6.0.1 ./preprocess_fmri.sh $fmri $ES $TR $do_stc
   fmri=preprocessed_$(basename ${fmri})
 fi
