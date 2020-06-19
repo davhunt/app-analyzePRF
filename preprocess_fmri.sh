@@ -10,7 +10,7 @@ if ${do_stc}; then
   echo "Doing slice timing correction"
   if [ $TR != null ]; then
     :
-  elif [ ! -z $(fslval ${fmri} pixdim4 ]; then
+  elif [ ! -z $(fslval ${fmri} pixdim4) ]; then
     TR=$(fslval ${fmri} pixdim4)
   else
     echo "fmri TR must be specified" && do_stc=false
