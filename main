@@ -60,6 +60,13 @@ fi
 
 mkdir -p prf
 
+echo "running pRF"
 time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/main
+if [ ! -s ./prf/r2.nii.gz ];
+then
+	echo "output missing"
+	exit 1
+fi
+
 
 time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer-mini:6.0.1 ./create_vtks.sh $fsdir

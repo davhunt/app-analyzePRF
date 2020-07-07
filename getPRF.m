@@ -34,7 +34,7 @@ for i = 1:size(r,1)
 end
 maskedData = squeeze(maskedData);
 
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
+results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
