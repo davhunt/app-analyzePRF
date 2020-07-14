@@ -1,44 +1,79 @@
 function getPRF(fmri,stim,mask)
 
-data = [];
-nii = load_untouch_nii(fmri);
-data = double(nii.img);
+%data = [];
+%nii = load_untouch_nii(fmri);
+%data = double(nii.img);
 
+%stimulus = {};
+%a1 = load_untouch_nii(stim);
+%stimulus{1} = double(a1.img);
+
+
+if length(fmri) ~= length(stim)
+  error('must input one stimulus for each fmri run')
+end
+
+data = {};
 stimulus = {};
-a1 = load_untouch_nii(stim);
-stimulus{1} = double(a1.img);
+
+for p=1:length(fmri)
+  a1 = load_untouch_nii(char(fmri{p}));
+  data{p} = a1.img;
+  a1 = load_untouch_nii(char(stim{p}));
+  stimulus{p} = a1.img;
+end
+
+
+
+
+
+
 
 pxtodeg = 16.0/200;
 
-maskBool = [];
-maskedData = [];
 a1 = load_untouch_nii(mask);
-maskBool = double(a1.img);
-
-for i = 1:size(data,1)
-  for j = 1:size(data,2)
-    for k = 1:size(data,3)
-      if maskBool(i,j,k) >= 1.0
-        maskBool(i,j,k) = 1.0;	% create binary mask
-      end
-    end
-  end
-end
+maskBool = a1.img;
+maskBool(maskBool >= 1) = 1.0;	% create binary mask
 maskBool = logical(maskBool);
 
 [r,c,v] = ind2sub(size(maskBool),find(maskBool));
 
-maskedData = zeros(size(r,1),size(data,4));
-for i = 1:size(r,1)
-  maskedData(i,:) = data(r(i),c(i),v(i),:);
-end
-maskedData = squeeze(maskedData);
+maskedData = {};
 
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[2],'display','off'));
+for p = 1:length(data)
+  maskedData{p} = zeros(size(r,1),size(data{p},4));
+  for i = 1:size(r,1)
+    maskedData{p}(i,:) = data{p}(r(i),c(i),v(i),:);
+  end
+  maskedData{p} = squeeze(maskedData{p});
+end
+
+
+results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
 results.ang(results.ecc(:)==0) = NaN;
+
+
+
+
+% one final modification to the outputs:
+% whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
+% remove eccentricity and rfsizes > 90 degrees since they don't make sense
+%allresults = squish(permute(allresults,[1 3 4 2]),1);
+%allresults(allresults(:,2)==0,1) = NaN;
+%allresults(allresults(:,2)>90,2) = NaN;
+%allresults(allresults(:,6)>90,6) = NaN;
+%allresults(:,5) = allresults(:,5)/100.0;
+%allresults = permute(reshape(allresults,[totalVertices 1 1 7]),[1 4 2 3]);
+
+
+
+
+
+
+
 
 [polarAngle, eccentricity, expt, rfWidth, r2, gain, meanvol] = deal(zeros(size(data,1), size(data,2), size(data,3)));
 
@@ -62,6 +97,7 @@ for k = 1:size(maskBool,3)
   end
 end
 
+nii = load_untouch_nii(char(fmri{1}));
 nii.hdr.dime.dim(1) = 3;
 nii.hdr.dime.dim(5) = 1;
 nii.hdr.dime.datatype = 64; %FLOAT64 img
