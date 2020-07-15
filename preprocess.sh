@@ -39,6 +39,6 @@ num_runs=$(jq -r '.fmri | length' config.json)
 for i in $(seq 1 $num_runs); do
   #new_fmri="${new_fmri}, \"$(jq -r ".fmri[$i]" config.json)\""; done
   new_fmri="${new_fmri}, \"preproc_bold_${i}.nii.gz\""; done
-jq ".fmri[] = [ ${new_fmri:2} ]" config.json > temp.json && mv temp.json config.json
+jq ".fmri = [ ${new_fmri:2} ]" config.json > temp.json && mv temp.json config.json
 
 # clean up intermediate files

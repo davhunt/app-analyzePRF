@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=12,vmem=120gb,walltime=96:00:00
+#PBS -l nodes=1:ppn=12,vmem=120gb,walltime=1:00:00
 #PBS -N pRF
 #PBS -V
 
@@ -24,6 +24,7 @@ if $(jq -r .parietal config.json); then parietalROIs="2008 2017 2022 2025 2029 2
 if $(jq -r .occipital config.json); then occipitalROIs="2005 2011 2013 2021 1005 1011 1013 1021"; fi
 
 if [ ! -f $(jq -r .mask config.json) ]; then
+  echo "creating mask"
   time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer:6.0.0 bash -c \
 			"mri_convert ${fsdir}/mri/T1.mgz ./T1.nii.gz && \
 			mri_convert ${fsdir}/mri/aparc+aseg.mgz ./aparc+aseg.nii.gz && \
@@ -40,6 +41,5 @@ then
 	echo "output missing"
 	exit 1
 fi
-
 
 time singularity exec -e -B `pwd`/license.txt:/usr/local/freesurfer/license.txt docker://brainlife/freesurfer-mini:6.0.1 ./create_vtks.sh $fsdir
