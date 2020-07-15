@@ -22,4 +22,4 @@ arr_cat = np.concatenate(list(arr.values()),3)
 fmri_cat = nib.Nifti1Image(arr_cat, fmri["nii1"].affine, fmri["nii1"].header)
 fmri_cat.header['dim'][4] = sumTR
 
-save(fmri_cat,'bold_cat.nii.gz')
+nib.save(fmri_cat,'bold_cat.nii.gz')

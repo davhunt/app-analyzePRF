@@ -20,4 +20,4 @@ for i in range(0,len(sys.argv)-2):
   n = n+lenFMRI
 
   preproc_fmri = nib.Nifti1Image(data_arr, fmri[key].affine, fmri[key].header)
-  save(preproc_fmri,'preproc_bold_' + str(i+1) + '.nii.gz')
+  nib.save(preproc_fmri,'preproc_bold_' + str(i+1) + '.nii.gz')

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 fmri=$(jq -r '.fmri[]' config.json)
-time singularity docker://brainlife/dipy:1.1.1 bash -c "./combine_fmri.py ${fmri}"
+time singularity exec -e docker://brainlife/dipy:1.1.1 python3 combine_fmri.py ${fmri}
 
 # check for "preprocessed" tag on input, otherwise preprocess if requested
 inputs=$(jq -r ._inputs[].id config.json)
@@ -31,7 +31,7 @@ elif $preprocess; then
   time singularity exec -e docker://brainlife/fsl:6.0.1 ./preprocess_fmri.sh bold_cat.nii.gz $ES $TR $do_stc
 fi
 
-time singularity docker://brainlife/dipy:1.1.1 bash -c "./split_fmri.py preprocessed_bold_cat.nii.gz ${fmri}"
+time singularity exec -e docker://brainlife/dipy:1.1.1 python3 split_fmri.py preprocessed_bold_cat.nii.gz ${fmri}
 
 # now replace with preprocessed runs in config.json
 
