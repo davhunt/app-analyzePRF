@@ -1,5 +1,21 @@
 {
-    "fmri": "/N/u/davhunt/Carbonate/Downloads/100610/bold.nii.gz",
-    "stim": "/N/u/davhunt/Carbonate/Downloads/HCP stimuli/stim1.nii.gz",
-    "output": "/freesurfer/output"
+    "frontal": false,
+    "parietal": false,
+    "temporal": false,
+    "occipital": true,
+    "preprocess": true,
+    "TR": 1,
+    "fmri": [
+        "./test/run1.nii.gz",
+        "./test/run2.nii.gz",
+        "./test/run3.nii.gz",
+        "./test/run4.nii.gz"
+    ],
+    "stim": [
+        "./test/stim1.nii.gz",
+        "./test/stim2.nii.gz",
+        "./test/stim3.nii.gz",
+        "./test/stim4.nii.gz"
+    ],
+    "output": "test/output"
 }

@@ -1,14 +1,5 @@
 function getPRF(fmri,stim,mask)
 
-%data = [];
-%nii = load_untouch_nii(fmri);
-%data = double(nii.img);
-
-%stimulus = {};
-%a1 = load_untouch_nii(stim);
-%stimulus{1} = double(a1.img);
-
-
 if length(fmri) ~= length(stim)
   error('must input one stimulus for each fmri run')
 end
@@ -22,12 +13,6 @@ for p=1:length(fmri)
   a1 = load_untouch_nii(char(stim{p}));
   stimulus{p} = a1.img;
 end
-
-
-
-
-
-
 
 pxtodeg = 16.0/200;
 
@@ -48,32 +33,14 @@ for p = 1:length(data)
   maskedData{p} = squeeze(maskedData{p});
 end
 
-
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
-
-% one final modification to the outputs:
-% whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
-results.ang(results.ecc(:)==0) = NaN;
-
-
-
+results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[0 1 2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
 % remove eccentricity and rfsizes > 90 degrees since they don't make sense
-%allresults = squish(permute(allresults,[1 3 4 2]),1);
-%allresults(allresults(:,2)==0,1) = NaN;
-%allresults(allresults(:,2)>90,2) = NaN;
-%allresults(allresults(:,6)>90,6) = NaN;
-%allresults(:,5) = allresults(:,5)/100.0;
-%allresults = permute(reshape(allresults,[totalVertices 1 1 7]),[1 4 2 3]);
-
-
-
-
-
-
-
+results.ang(results.ecc(:)==0) = NaN;
+results.ecc(results.ecc(:)>90) = NaN;
+results.rfWidth(results.rfWidth(:)>90) = NaN;
 
 [polarAngle, eccentricity, expt, rfWidth, r2, gain, meanvol] = deal(zeros(size(data,1), size(data,2), size(data,3)));
 
