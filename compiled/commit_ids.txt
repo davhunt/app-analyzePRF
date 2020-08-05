@@ -13,13 +13,6 @@ Author: JustinGardner <jshopsafe@me.com>
 Date:   Wed Jul 18 11:41:49 2018 -0700
 
     Fixing isFile to mlrIsFile
-/N/u/brlife/git/vistasoft
-commit b3823616ae64600a01f0223b6dba5279cf6cf3a7
-Merge: 8ce10bf 291190f
-Author: francopestilli <frakkopesto@gmail.com>
-Date:   Sun Mar 1 15:27:01 2020 -0500
-
-    Merge branch 'master' of https://github.com/vistalab/vistasoft
 /N/u/davhunt/Carbonate/analyzePRF/utilities
 commit b6468ed4293b620b0871c3143e17cea4660ff3ae
 Author: Kendrick Kay <kendrick@post.harvard.edu>

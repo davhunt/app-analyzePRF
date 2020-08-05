@@ -33,14 +33,14 @@ for p = 1:length(data)
   maskedData{p} = squeeze(maskedData{p});
 end
 
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[-2],'display','off'));
+results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[0 1 2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.
 % remove eccentricity and rfsizes > 90 degrees since they don't make sense
 results.ang(results.ecc(:)==0) = NaN;
 results.ecc(results.ecc(:)>90) = NaN;
-results.rfWidth(results.rfWidth(:)>90) = NaN;
+results.rfsize(results.rfsize(:)>90) = NaN;
 
 [polarAngle, eccentricity, expt, rfWidth, r2, gain, meanvol] = deal(zeros(size(data,1), size(data,2), size(data,3)));
 
@@ -65,10 +65,19 @@ for k = 1:size(maskBool,3)
 end
 
 nii = load_untouch_nii(char(fmri{1}));
-nii.hdr.dime.dim(1) = 3;
-nii.hdr.dime.dim(5) = 1;
-nii.hdr.dime.datatype = 64; %FLOAT64 img
-nii.hdr.dime.bitpix = 64;
+%voxRes = a1.hdr.dime.pixdim(2:4) % voxel resolution of original fMRI
+datatype = 64; % float64
+origin = [0 0 0]; % voxels start at 0 0 0
+%nii = make_nii(r2,voxRes,origin,datatype);
+
+nii.hdr.dime.datatype = 64; nii.hdr.dime.bitpix = 64; % float64
+nii.hdr.dime.dim(1) = 3; nii.hdr.dime.dim(5) = 1;
+nii.hdr.dime.scl_slope = 0; nii.hdr.dime.scl_inter = 0;
+nii.hdr.dime.glmax = 0; nii.hdr.dime.glmin = 0; % just set to 0
+
+
+%nii.hdr.dime.pixdim(1) = a1.hdr.dime.pixdim(1); % should be 1 or -1?
+%nii.hdr.dime.xyzt_units = a1.hdr.dime.xyzt_units; % millimeters x seconds
 
 nii.img = polarAngle;
 save_untouch_nii(nii,['prf/polarAngle.nii.gz']);
