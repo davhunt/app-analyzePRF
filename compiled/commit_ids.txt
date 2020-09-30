@@ -13,10 +13,10 @@ Author: JustinGardner <jshopsafe@me.com>
 Date:   Wed Jul 18 11:41:49 2018 -0700
 
     Fixing isFile to mlrIsFile
-/N/u/davhunt/Carbonate/analyzePRF/utilities
-commit b6468ed4293b620b0871c3143e17cea4660ff3ae
-Author: Kendrick Kay <kendrick@post.harvard.edu>
-Date:   Tue Sep 24 20:16:09 2019 -0500
+/N/u/brlife/git/NIfTI
+utilities
+commit 83607ee365828da08e56972d86e5b466f9b2bbd9
+Author: David Hunt <davhunt@indiana.edu>
+Date:   Wed Sep 2 11:30:13 2020 -0400
 
-    fix minor bug
-/N/u/davhunt/Carbonate/Downloads/NIfTI_matlab_tools
+    include sphere.reg to surfaces output
