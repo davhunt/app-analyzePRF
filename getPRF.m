@@ -1,8 +1,15 @@
-function getPRF(fmri,stim,mask)
+function getPRF(fmri, stim, mask, TR, pxtodeg)
 
 if length(fmri) ~= length(stim)
   error('must input one stimulus for each fmri run')
 end
+
+if ~isempty(TR) tr = TR;  % temporal sampling rate in seconds 
+else
+  error('No repetition time (TR) found for inputted fMRI')
+end
+
+if isempty(pxtodeg) error('conversion factor from pixels (of visual stimulus) to degrees not specified'); end    % conversion from pixels to degrees
 
 data = {};
 stimulus = {};
@@ -13,8 +20,6 @@ for p=1:length(fmri)
   a1 = load_untouch_nii(char(stim{p}));
   stimulus{p} = a1.img;
 end
-
-pxtodeg = 16.0/200;
 
 a1 = load_untouch_nii(mask);
 maskBool = a1.img;
@@ -33,7 +38,7 @@ for p = 1:length(data)
   maskedData{p} = squeeze(maskedData{p});
 end
 
-results = analyzePRF(stimulus,maskedData,1,struct('seedmode',[0 1 2],'display','off'));
+results = analyzePRF(stimulus,maskedData,tr,struct('seedmode',[0 1 2],'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.

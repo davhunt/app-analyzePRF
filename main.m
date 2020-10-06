@@ -17,6 +17,6 @@ else
 end
 
 % compute pRF
-getPRF(config.fmri, config.stim, mask);
+getPRF(config.fmri, config.stim, mask, config.TR, config.pxtodeg);
 
 end

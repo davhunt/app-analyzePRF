@@ -15,8 +15,8 @@ Date:   Wed Jul 18 11:41:49 2018 -0700
     Fixing isFile to mlrIsFile
 /N/u/brlife/git/NIfTI
 utilities
-commit 83607ee365828da08e56972d86e5b466f9b2bbd9
+commit d0212e6f2b7843f819f2a8a02690a9f89d293ced
 Author: David Hunt <davhunt@indiana.edu>
-Date:   Wed Sep 2 11:30:13 2020 -0400
+Date:   Tue Oct 6 12:36:27 2020 -0400
 
-    include sphere.reg to surfaces output
+    export TR var
