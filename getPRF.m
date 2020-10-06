@@ -6,7 +6,8 @@ end
 
 if ~isempty(TR) tr = TR;  % temporal sampling rate in seconds 
 else
-  error('No repetition time (TR) found for inputted fMRI')
+  disp('No repetition time (TR) specified for inputted fMRI, using TR from nifti header');
+  tr = load_untouch_nii(char(fmri{1}).hdr.dime.pixdim(5));
 end
 
 if isempty(pxtodeg) error('conversion factor from pixels (of visual stimulus) to degrees not specified'); end    % conversion from pixels to degrees

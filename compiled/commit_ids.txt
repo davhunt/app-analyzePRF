@@ -15,8 +15,8 @@ Date:   Wed Jul 18 11:41:49 2018 -0700
     Fixing isFile to mlrIsFile
 /N/u/brlife/git/NIfTI
 utilities
-commit d0212e6f2b7843f819f2a8a02690a9f89d293ced
+commit 4d28119cb4e34eb478a5666dd51699e9cd6b947f
 Author: David Hunt <davhunt@indiana.edu>
-Date:   Tue Oct 6 12:36:27 2020 -0400
+Date:   Tue Oct 6 16:59:27 2020 -0400
 
-    export TR var
+    make TR, and pix2deg conversion factor configurable
