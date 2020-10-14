@@ -560,7 +560,7 @@ end
 % we have to get the outputs in a common format
 if wantquick
   paramsA = permute(squish(supergridseeds,dimdata),[3 2 1]);  % fits x parameters x voxels
-  rA = squish(rvalues,dimdata)';                              % fits x voxels
+  rA = squish(rvalues,dimdata)'*100.0;                        % fits x voxels
 else
   paramsA = a1.params;                                        % fits x parameters x voxels
   rA = a1.trainperformance;                                   % fits x voxels
