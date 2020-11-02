@@ -15,8 +15,8 @@ Date:   Wed Jul 18 11:41:49 2018 -0700
     Fixing isFile to mlrIsFile
 /N/u/brlife/git/NIfTI
 utilities
-commit f27ba80cc9dbb29eeb15a9e27f6253df7a7803d6
+commit d7fd889349617251b60c996af715b8218c5ffdf5
 Author: David Hunt <davhunt@indiana.edu>
-Date:   Tue Oct 6 19:16:36 2020 -0400
+Date:   Tue Oct 13 21:58:15 2020 -0400
 
-    read TR from header
+    convert r^2 to %
