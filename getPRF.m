@@ -1,4 +1,4 @@
-function getPRF(fmri, stim, mask, TR, pxtodeg)
+function getPRF(fmri, stim, mask, seedmodes, TR, pxtodeg, gsr)
 
 if length(fmri) ~= length(stim)
   error('must input one stimulus for each fmri run')
@@ -39,7 +39,9 @@ for p = 1:length(data)
   maskedData{p} = squeeze(maskedData{p});
 end
 
-results = analyzePRF(stimulus,maskedData,tr,struct('seedmode',[0 1 2],'display','off'));
+maskedData = globalRegress(maskedData, gsr); % do global signal regression
+
+results = analyzePRF(stimulus,maskedData,tr,struct('seedmode',seedmodes,'display','off'));
 
 % one final modification to the outputs:
 % whenever eccentricity is exactly 0, we set polar angle to NaN since it is ill-defined.

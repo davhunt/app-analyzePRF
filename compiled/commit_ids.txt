@@ -15,8 +15,9 @@ Date:   Wed Jul 18 11:41:49 2018 -0700
     Fixing isFile to mlrIsFile
 /N/u/brlife/git/NIfTI
 utilities
-commit d7fd889349617251b60c996af715b8218c5ffdf5
-Author: David Hunt <davhunt@indiana.edu>
-Date:   Tue Oct 13 21:58:15 2020 -0400
 
-    convert r^2 to %
+commit 1fe15b8a97e450ae1b92401b1874c925480e65b2
+Author: David Hunt <davhunt@indiana.edu>
+Date:   Mon Oct 26 16:21:41 2020 -0400
+
+    add global signal regression (GSR) options
