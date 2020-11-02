@@ -5,7 +5,7 @@
 
 This app takes the time-series fMRI data of an individual subject performing a retinotopy task (bold.nii.gz), and derives voxel-wise pRF (population receptive field) measurements from their visual response to a stimulus (stim.nii.gz) using the [analyzePRF toolbox](https://github.com/kendrickkay/analyzePRF). In this model a static, compressive nonlinearity is applied to the modeled BOLD response before PRFs are fit, in line with findings that spatial summation in human visual cortex is compressive.
 
-Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  PRF measurements include the grayordinate's r^2 (variance explained), receptive field angle, eccentricity, and size (std of the Gaussian), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
+Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  PRF measurements include the grayordinate's r^2 (variance explained), receptive field polar angle (in deg), eccentricity (in deg), and size (std of the Gaussian in deg), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
 
 [![pRF parameters](https://raw.githubusercontent.com/davhunt/pictures/master/Screenshot%20from%202019-04-17%2014-41-11.png)
 
@@ -15,7 +15,7 @@ The stimulus stim.nii.gz must match the temporal dimension (TR) of the fMRI, and
 
 The fMRI data can optionally be preprocessed with slice-timing correction and head motion correction.
 
-Global signal regression of FMRI supported, converting signal to % change from baseline, either computing baseline for each voxel seperately (per-voxel normalization, pvn) or computing a global baseline (grand-mean scaling, gms).
+Global signal regression of FMRI supported, converting signal to % change from baseline, either computing baseline for each voxel seperately (per-voxel normalization, 'pvn') or computing a global baseline (grand-mean scaling, 'gms').
 
 ### Authors
 - Kendrick Kay (kendrick@post.harvard.edu)
@@ -110,7 +110,7 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.177](h
 
 ## Output
 
-All output files will be generated under the current working directory (pwd). The main output of this App is the "prf" directory which contains NIFTI files polarAngle, eccentricity, receptive field size (rfWidth), R2, exponent, gain, and mean volume of each grayordinate.
+All output files will be generated under the current working directory (pwd). The main output of this App is the "prf" directory which contains NIFTI files polarAngle, eccentricity, receptive field size (rfWidth), R2, exponent, gain, and mean volume of each voxel.
 
 ### Dependencies
 
