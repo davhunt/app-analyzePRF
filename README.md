@@ -75,7 +75,7 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.177](h
     "occipital": true,
     "preprocess": false,
     "TR": "",
-    "pxtodeg": 0.08
+    "pxtodeg": 0.08,
     "gsr": "pvn",
     "wantquick": false,
     "seedmode0": true,
@@ -92,6 +92,7 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.177](h
       "testdata/run2/fmri/events.tsv",
       "testdata/run3/fmri/events.tsv",
       "testdata/run4/fmri/events.tsv"
+    ],
     "stim": [
       "testdata/run1/stim/stim.nii.gz",
       "testdata/run2/stim/stim.nii.gz",
