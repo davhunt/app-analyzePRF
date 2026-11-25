@@ -3,6 +3,63 @@
 
 # app-analyzePRF documentation
 
+<!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
+
+> **Estimates voxel-wise population receptive fields (polar angle, eccentricity, size, R2) from retinotopy fMRI and its stimulus with Kendrick Kay's analyzePRF toolbox.**
+
+Fits the analyzePRF compressive spatial summation model to each voxel of the fMRI time series given the stimulus aperture. Voxels are restricted to the provided mask or, if none, to the FreeSurfer cortical ribbon in the selected lobes (occipital by default). fMRI can optionally be slice-time and motion corrected and globally regressed. Designed for HCP 7T retinotopy data; the stimulus must match the fMRI timing.
+
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/func/task` · `neuro/stimulus` · `neuro/freesurfer` · `neuro/mask` (optional) |
+| 📤 **Outputs** | `neuro/prf` |
+| 🐳 **Container** | `brainlife/freesurfer:6.0.0` |
+| ⚙️ **Resources** | 12 CPUs · 120 GB memory · 96 h walltime |
+| 🔑 **Requires** | `FREESURFER_LICENSE` |
+| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.177](https://doi.org/10.25663/brainlife.app.177) |
+
+#### 📥 Inputs
+
+| Input | Datatype | Required | Description |
+|---|---|---|---|
+| `fmri` | `neuro/func/task` | yes | Retinotopy task fMRI time series (bold). |
+| `stim` | `neuro/stimulus` | yes | Stimulus aperture as a pixelsX x pixelsY x time NIfTI with values in [0,1]. Must match the temporal dimension (TR) of the fMRI. |
+| `freesurfer` | `neuro/freesurfer` | yes | Used to generate .vtk surfaces |
+| `mask` | `neuro/mask` | no | Optional mask in fMRI space restricting the voxels analysed (for example V1). |
+
+#### 📤 Outputs
+
+| Output | Datatype | Description |
+|---|---|---|
+| `prf` | `neuro/prf` | pRF maps (polar angle, eccentricity, receptive field size, R2, exponent, gain, mean volume) as NIfTI, plus surface VTKs. |
+
+<details>
+<summary><b>⚙️ Parameters</b> (12)</summary>
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `frontal` | boolean | `false` | Include frontal cortex in analysis |
+| `parietal` | boolean | `false` | Include parietal cortex in analysis |
+| `temporal` | boolean | `false` | Include temporal cortex in analysis |
+| `occipital` | boolean | `true` | Include occipital cortex in analysis |
+| `preprocess` | boolean | `true` | Perform slice-timing and head motion correction on fMRI if not already preprocessed |
+| `TR` | number |  | Repetition time of fMRI (read from the nii header if unspecified) |
+| `pxtodeg` | number | `0.08` | Conversion factor from pixels to degrees subtended for visual stimulus (16 deg / 200 px for HCP data) |
+| `gsr` | enum | `none` | Specifies whether global signal regression (GSR) on input fMRI should be done, conversion to % change from baseline Options: `none`, `pvn`, `gms`. |
+| `wantquick` | boolean | `false` | Use seedmode -2 and perform very quick PRF analysis % - When <seedmode> is -2, optimization is not performed and instead the best seed based on the super-grid is returned as the final estimate. |
+| `seedmode0` | boolean | `true` | seedmode 0: % - The first seed is a generic large pRF that is centered with respect to the stimulus, has a pRF size equal to 1/4th of the stimulus extent (thus, +/- 2 pRF sizes matches the stimulus extent), and has an exponent of 0.5. |
+| `seedmode1` | boolean | `true` | seedmode 1: % - The second seed is a generic small pRF that is just like the first seed except has a pRF size that is 10 times smaller. |
+| `seedmode2` | boolean | `true` | seedmode 2: % - The third seed is a "supergrid" seed that is identified by performing a quick grid search prior to optimization (similar in spirit to methods described in Dumoulin and Wandell, 2008). In this procedure, a list of potential seeds is constructed by % exploring a range of eccentricities, angles, and exponents. For each potential % seed, the model prediction is computed, and the seed that produces the closest % match to the data is identified. |
+
+</details>
+
+📚 **References used by this App:**
+- Kay KN, Winawer J, Mezer A, Wandell BA. Compressive spatial summation in human visual cortex. J Neurophysiol 110(2):481-494 (2013). [doi:10.1152/jn.00105.2013](https://doi.org/10.1152/jn.00105.2013)
+- Zhou J, Benson NC, Kay KN, Winawer J. Compressive temporal summation in human visual cortex. J Neurosci 38(3):691-709 (2018). [doi:10.1523/JNEUROSCI.1724-17.2017](https://doi.org/10.1523/JNEUROSCI.1724-17.2017)
+- Benson NC, et al. The Human Connectome Project 7 Tesla retinotopy dataset: Description and population receptive field analysis. J Vis 18(13):23 (2018).
+
+<!-- brainlife-app:end -->
+
 This app takes the time-series fMRI data of an individual subject performing a retinotopy task (bold.nii.gz), and derives voxel-wise pRF (population receptive field) measurements from their visual response to a stimulus (stim.nii.gz) using the [analyzePRF toolbox](https://github.com/kendrickkay/analyzePRF). In this model a static, compressive nonlinearity is applied to the modeled BOLD response before PRFs are fit, in line with findings that spatial summation in human visual cortex is compressive.
 
 Visually responsive voxels (or grayordinates) are analyzed and properties of each grayordinate is extracted from the fMRI data.  PRF measurements include the grayordinate's r^2 (variance explained), receptive field polar angle (in deg), eccentricity (in deg), and size (std of the Gaussian in deg), as well as the (typically compressive) exponent of the Gaussian used to model the receptive field's visual response contrast, the gain describing the pRF model, and the mean signal intensity.
